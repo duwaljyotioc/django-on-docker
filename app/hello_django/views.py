@@ -7,7 +7,9 @@ def student_show(request):
     cursor = connection.cursor()
     cursor.execute('''SELECT * FROM django_migrations''')
 
-    print(cursor.fetchone())
+    print('====================================>')
+    print("DB information", cursor.fetchone())
+    print('====================================')
     x = []
     for i in range(10):
         x.append(i)
