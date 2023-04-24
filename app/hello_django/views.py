@@ -5,6 +5,7 @@ from django.db import connection
 def student_show(request):
     cursor = connection.cursor()
     cursor.execute('''SELECT * FROM django_migrations''')
+
     print(cursor.fetchone())
     x = []
     for i in range(10):
