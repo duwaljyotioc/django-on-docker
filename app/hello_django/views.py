@@ -16,5 +16,5 @@ def student_show(request):
 
     django_version = django.VERSION
     print(django_version)
-    test_response = "<h1>DataFlair Django </h1>The Digits are {0}".format(x) + "django version =>" + ''
+    test_response = "<h1>DataFlair Django </h1>The Digits updated are {0}".format(x) + "django version =>" + ''
     return HttpResponse(test_response)
