@@ -1,5 +1,9 @@
 version: '3.8'
 
+networks:
+  stinsons:
+    driver: bridge
+
 services:
   db:
     image: postgres:13.0-alpine
@@ -7,6 +11,8 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.prod.db
+    networks:
+      - stinsons
   web:
     build: ./app
     command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
@@ -18,14 +24,19 @@ services:
       - ./.env.prod
     depends_on:
       - db
+    networks:
+      - stinsons
   nginx:
-    image: nginx:1.25-alpine
+    image: nginx:latest
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - web
     volumes:
       - nginx_data:/var/lib/nginx/data/
+    networks:
+      - stinsons
 
 volumes:
   postgres_data:
