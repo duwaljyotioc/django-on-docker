@@ -25,7 +25,7 @@ services:
     depends_on:
       - web
     volumes:
-      - ./.docker/nginx:/etc/nginx/conf.d  # Mounting Nginx configuration files
+      - nginx_data:/var/lib/nginx/data/
 
 volumes:
   postgres_data:
