@@ -24,6 +24,8 @@ services:
       - 80:80
     depends_on:
       - web
+    volumes:
+      - ./.docker/nginx:/etc/nginx/conf.d  # Mounting Nginx configuration files
 
 volumes:
   postgres_data:
