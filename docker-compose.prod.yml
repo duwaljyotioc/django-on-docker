@@ -27,7 +27,7 @@ services:
 #    networks:
 #      - stinsons
   nginx:
-    image: nginx:latest
+    build: ./nginx
     ports:
       - 80:80
       - 443:443
