@@ -1,5 +1,10 @@
 version: '3.8'
 
+networks:
+  application:
+    driver: bridge
+  redis-net:
+
 services:
   web:
     build: ./app
@@ -16,6 +21,49 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.prod.db
+
+
+  redis:
+    image: redis
+    container_name: app_redis
+    command: redis-server
+    ports:
+      - "6380:6379"
+    networks:
+      - application
+      - redis-net
+
+    celery-worker:
+      build:
+        context: .
+        dockerfile: Dockerfile  # Use your Celery Dockerfile
+      volumes:
+        - ./app/:/usr/src/app/
+      env_file: .env
+      command: celery -A <project_name> worker -l info
+      container_name: app_celery_worker
+      depends_on:
+        - web  # Ensure that the API service is running before Celery Worker starts
+        - redis
+      networks:
+        - application
+        - redis-net
+
+    celery-beat:
+      build:
+        context: .
+        dockerfile: Dockerfile  # Use your Celery Dockerfile
+      volumes:
+        - ./app/:/usr/src/app/
+      env_file: .env
+      command: celery -A <project_name> beat -l info
+      container_name: app_celery_beat
+      depends_on:
+        - web  # Ensure that the API service is running before Celery Beat starts
+        - redis
+      networks:
+        - application
+        - redis-net
 
 volumes:
   postgres_data:
