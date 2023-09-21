@@ -78,3 +78,28 @@ volumes:
   postgres_data:
 
 ```
+### Nginx
+Nginx service is added to the docker-compose file.
+Configurations for the nginx service can be found inside the nginx folder.
+server_name should also be updated in the nginx file.
+
+### Certbot
+No additional configurations are required for the certbot.
+
+### References:
+1) https://testdriven.io/blog/dockerizing-django-with-postgres-gunicorn-and-nginx/
+2) https://pentacent.medium.com/nginx-and-lets-encrypt-with-docker-in-less-than-5-minutes-b4b8a60d3a71
+
+
+After deploying the app, you would need to hit the following commands:
+
+1) docker-compose up --build
+2) chmod +x init-letsencrypt.sh
+3) sudo ./init-letsencrypt.sh
+
+domains variable in the init-letsncrypt.sh should be replaced with the domain name for e.g
+domains=(stinsonsinteriors.com www.stinsonsinteriors.com)
+
+email should also be updated in the same file.
+value of staging needs to be updated as well.
+As there might be an exception thrown if there are too many tries with the staging off in the letsencrypt.sh
