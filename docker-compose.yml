@@ -9,7 +9,8 @@ networks:
 services:
   web:
     build: ./app
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+     sh - c "python manage.py wait_for_db && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./app/:/usr/src/app/
     ports:
@@ -43,7 +44,7 @@ services:
       dockerfile: Dockerfile  # Use your Celery Dockerfile
     volumes:
       - ./app/:/usr/src/app/
-    env_file: .env
+    env_file: .env.dev
     command: celery -A <project_name> worker -l info
     container_name: app_celery_worker
     depends_on:
@@ -59,7 +60,7 @@ services:
       dockerfile: Dockerfile  # Use your Celery Dockerfile
     volumes:
       - ./app/:/usr/src/app/
-    env_file: .env
+    env_file: .env.dev
     command: celery -A <project_name> beat -l info
     container_name: app_celery_beat
     depends_on:
