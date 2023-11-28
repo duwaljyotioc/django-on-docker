@@ -1,18 +1,11 @@
-from rest_framework import mixins
-from django.shortcuts import render
+from rest_framework import  viewsets
 from django.http import HttpResponse
 from django.db import connection
 import django
 
-from app.hello_django.models import User
-from app.hello_django.serializers import UserSerializer
 
-
-# from app.hello_django.models import User
-# from app.hello_django.serializers import UserSerializer
-
-
-# from app.hello_django.models import User
+from .serializers import UserSerializer, RoomSerializer, MessageSerializer
+from .models import User, Room, Messages
 
 def student_show(request):
     # something = User
@@ -33,8 +26,16 @@ def student_show(request):
     return HttpResponse(test_response)
 
 
-class UserViewSet(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin):
+class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+class RoomViewSet(viewsets.ModelViewSet):
+    queryset = Room.objects.all()
+    serializer_class = RoomSerializer
+
+class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Messages.objects.all()
+    serializer_class = MessageSerializer
 
 

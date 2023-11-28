@@ -15,6 +15,7 @@ class RoomParticipants(models.Model):
 
 class Messages(models.Model):
     type = models.CharField(max_length=1000)
+    message = models.CharField(max_length=1000)
     sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
     receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
 
